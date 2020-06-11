@@ -83,6 +83,3 @@ class UserTestCase(APITestCase):
         self.client.force_authenticate(user=user)
         response = self.client.get(f'/api/users/logout')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data.get('detail'), status.HTTP_204_NO_CONTENT)
-
-        self.fail()
