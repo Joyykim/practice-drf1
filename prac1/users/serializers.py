@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
-from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from cards.models import Card
 from cards.serializers import CardSerializer
 
 

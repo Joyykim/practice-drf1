@@ -4,6 +4,7 @@ from django.test import TestCase
 # Create your tests here.
 from munch import Munch
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 from model_bakery import baker
 
@@ -72,7 +73,7 @@ class UserTestCase(APITestCase):
         response = self.client.delete(f'/api/users/{1}')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        # self.assertFalse(User.objects.filter(pk=user.id).exist())
+        self.assertFalse(User.objects.filter(pk=user.id).exists())
 
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(pk=user.id)
@@ -83,3 +84,4 @@ class UserTestCase(APITestCase):
         self.client.force_authenticate(user=user)
         response = self.client.get(f'/api/users/logout')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(Token.objects.filter(user_id=user.id).exists())
