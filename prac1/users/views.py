@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
@@ -54,3 +56,11 @@ class UserViewSet(ModelViewSet):
             return [AllowAny()]
 
         return super().get_permissions()
+
+    @method_decorator(cache_page(60 * 60 * 2))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(60 * 60 * 2))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)

@@ -15,8 +15,8 @@ class CardTestCase(APITestCase):
     def setUp(self) -> None:
         self.users = baker.make('auth.User', _quantity=3)
         self.cards = baker.make('cards.Card', _quantity=4, content='dsds', owner=self.users[0])
-        self.cards += baker.make('cards.Card', _quantity=5, content='dsds', owner=self.users[1])
-        self.cards += baker.make('cards.Card', _quantity=3, content='dsds', owner=self.users[2])
+        self.cards += baker.make('cards.Card', _quantity=4, content='dsds', owner=self.users[1])
+        self.cards += baker.make('cards.Card', _quantity=4, content='dsds', owner=self.users[2])
 
         self.user = self.users[1]
         self.card = Card.objects.filter(owner_id=self.user.id).first()
@@ -43,7 +43,7 @@ class CardTestCase(APITestCase):
         self.assertEqual(card_response.content, data['content'])
         self.assertEqual(card_response.owner, self.user.username)
 
-    def test_should_get(self):
+    def test_should_retrieve(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/cards/{self.card.id}')
 
@@ -55,8 +55,8 @@ class CardTestCase(APITestCase):
 
     def test_should_update(self):
         prev_content = self.card.content
+        data = {"content": "new new blah blah blah"}
 
-        data = {"content": "new new blah blah blah", "owner_id": self.user.id}
         self.client.force_authenticate(user=self.user)
         response = self.client.put(f'/api/cards/{self.card.id}', data=data)
 

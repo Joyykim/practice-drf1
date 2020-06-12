@@ -128,3 +128,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
